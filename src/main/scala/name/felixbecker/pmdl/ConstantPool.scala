@@ -1,4 +1,4 @@
-package name.felixbecker.jbcp
+package name.felixbecker.pmdl
 
 import java.nio.ByteBuffer
 

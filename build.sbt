@@ -1,4 +1,4 @@
-name := "JBCP"
+name := "PMDL"
 
 version := "1.0"
 

@@ -1,4 +1,4 @@
-package name.felixbecker.jbcp
+package name.felixbecker.pmdl
 
 /**
  * Created by becker on 10/5/15.

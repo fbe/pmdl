@@ -1,4 +1,4 @@
-package name.felixbecker.jbcp.testassets;
+package name.felixbecker.pmdl.testassets;
 
 /**
  * Created by becker on 10/5/15.

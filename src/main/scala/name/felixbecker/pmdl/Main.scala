@@ -1,4 +1,4 @@
-package name.felixbecker.jbcp
+package name.felixbecker.pmdl
 
 import java.nio.ByteBuffer
 import java.nio.file.{Paths, Files}
@@ -37,7 +37,7 @@ object ClassAccessFlags {
 
 object Parser {
 
-  def parse(testClassFile: String = "target/scala-2.11/test-classes/name/felixbecker/jbcp/testassets/TestClass.class"): Unit ={
+  def parse(testClassFile: String = "target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/TestClass.class"): Unit ={
 
     val array = Files.readAllBytes(Paths.get(testClassFile))
 

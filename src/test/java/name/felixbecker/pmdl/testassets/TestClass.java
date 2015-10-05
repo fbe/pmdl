@@ -1,4 +1,4 @@
-package name.felixbecker.jbcp.testassets;
+package name.felixbecker.pmdl.testassets;
 
 import java.util.Random;
 
