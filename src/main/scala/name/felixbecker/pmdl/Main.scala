@@ -3,6 +3,7 @@ package name.felixbecker.pmdl
 import java.nio.ByteBuffer
 import java.nio.file.{Paths, Files}
 
+import name.felixbecker.pmdl.parser.raw.ClassFileParser
 
 
 object CPInfo {
@@ -35,6 +36,8 @@ object ClassAccessFlags {
   val ACC_ENUM = 0x4000
 }
 
+
+
 object Parser {
 
   def parse(testClassFile: String = "target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/TestClass.class"): Unit ={
@@ -45,32 +48,11 @@ object Parser {
 
     val bytes = ByteBuffer.wrap(array)
 
-    val cafebabe = bytes.getInt
+    val rawClassFile = ClassFileParser.parse(bytes)
 
-    if(cafebabe != 0xCAFEBABE){
-      throw new RuntimeException("File doesn't start with 0xCAFEBABE - isn't a java class file!")
-    }
+    println(rawClassFile)
 
-    val minor_version = bytes.getShort
-    val major_version = bytes.getShort
-
-
-    println(s"Class version is $major_version.$minor_version")
-
-    if(major_version < 52){
-      System.out.println("Parsing classes with major_level < 52 not implemented yet. Skipping")
-      return
-    }
-
-    val constantPoolCount = bytes.getShort
-
-    ConstantPool.parseCpInfo(bytes, constantPoolCount-1)
-
-    val accessFlags = bytes.getShort
-    val thisClass = bytes.getShort
-    val superClass = bytes.getShort
-    val interfacesCount = bytes.getShort
-
+    /*
     println(s"More class info: accessFlags: $accessFlags, thisClass: $thisClass, superClass: $superClass, interfacesCount: $interfacesCount")
 
     // interfaces
@@ -90,8 +72,8 @@ object Parser {
       println(s"Class is implementing Interface Constpool: $constantPoolIdxForIface")
     }
     println(s"Remaining bytes: ${bytes.remaining()} byte")
-
-    parseFieldInfos(bytes)
+*/
+    //parseFieldInfos(bytes)
   }
 
   def parseFieldInfos(bytes: ByteBuffer): Unit ={
