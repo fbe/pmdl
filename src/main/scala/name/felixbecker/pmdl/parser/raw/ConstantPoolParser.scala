@@ -3,7 +3,6 @@ package name.felixbecker.pmdl.parser.raw
 import java.nio.ByteBuffer
 import java.util
 
-import name.felixbecker.pmdl.CPInfo
 import name.felixbecker.pmdl.parser.raw.model.CPInfo
 
 
@@ -20,11 +19,30 @@ case class CPUnusedSlot(cpIndex: Short) extends CPInfo // Used for doubles / lon
 case class CPNameAndType(cpIndex: Short, nameIndex: Short, descriptorIndex: Short) extends CPInfo
 case class CPUTF8(cpIndex: Short, value: String) extends CPInfo
 
+object CPInfo {
+
+  val ClassTag = 7
+  val Fieldref = 9
+  val Methodref = 10
+  val InterfaceMethodRef = 11
+  val String = 8
+  val Integer = 3
+  val Float = 4
+  val Long = 5
+  val Double = 6
+  val NameAndType = 12
+  val Utf8 = 1
+  val MethodHandle = 15
+  val MethodType = 16
+  val InvokeDynamic = 18
+
+}
+
 class ConstantPoolParser(constantPoolCount: Short) extends RawParser[List[CPInfo]] {
 
   override def parse(bytes: ByteBuffer): List[CPInfo] = {
 
-    println(s"Elements in Constant pool $constantPoolCount")
+//    println(s"Elements in Constant pool $constantPoolCount")
 
     val elements = new util.ArrayList[CPInfo]()
 

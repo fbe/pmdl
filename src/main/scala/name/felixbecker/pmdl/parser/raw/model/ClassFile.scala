@@ -22,12 +22,25 @@ case class ClassFile(
                        */
 
 
-                      )  {
+                      ) extends Traversable[Any] {
 
 
 
   override def toString: String = {
     cpInfos.map(_.toString).mkString("\n")
+  }
+
+  override def foreach[U](f: (Any) => U): Unit = {
+    f(magicNumber)
+    f(minorVersion)
+    f(majorVersion)
+    f(constantPoolCount)
+    cpInfos.foreach(f)
+    f(accessFlags)
+    f(superClass)
+    f(interfacesCount)
+    interfaces.foreach(f)
+    f(fieldCount)
   }
 }
 

@@ -18,10 +18,10 @@ object ClassFileParser extends RawParser[ClassFile] {
     val minorVersion = bytes.getShort()
     val majorVersion = bytes.getShort()
 
-    if(majorVersion < 52){
+    /*if(majorVersion < 52){
       System.out.println("Parsing classes with major_level < 52 not implemented yet. Skipping")
       throw new RuntimeException("Parsing classes with major_level < 52 not implemented yet. Skipping")
-    }
+    }*/
 
     val constantPoolCount = bytes.getShort()
     val cpInfos: List[CPInfo] = new ConstantPoolParser((constantPoolCount-1).toShort).parse(bytes)
@@ -42,28 +42,3 @@ object ClassFileParser extends RawParser[ClassFile] {
 
   }
 }
-
-/*
-// Representation of a raw class file, defined in https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html
-case class ClassFile(
-                      magicNumber: Char,
-                      minorVersion: Short,
-                      majorVersion: Short,
-                      constantPoolCount: Short,
-                      cpInfos: List[CPInfo],
-                      accessFlags: Short,
-                      thisClass: Short,
-                      superClass: Short,
-                      interfacesCount:Short,
-                      interfaces: List[Short],
-                      fieldCount: Short
-                      /*
-                       field_info     fields[fields_count];
-                       u2             methods_count;
-                       method_info    methods[methods_count];
-                       u2             attributes_count;
-                       attribute_info attributes[attributes_count];
-                       */
-                      )
-
- */

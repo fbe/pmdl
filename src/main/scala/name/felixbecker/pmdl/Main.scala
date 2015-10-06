@@ -3,27 +3,8 @@ package name.felixbecker.pmdl
 import java.nio.ByteBuffer
 import java.nio.file.{Paths, Files}
 
-import name.felixbecker.pmdl.parser.raw.ClassFileParser
+import name.felixbecker.pmdl.parser.raw._
 
-
-object CPInfo {
-
-  val ClassTag = 7
-  val Fieldref = 9
-  val Methodref = 10
-  val InterfaceMethodRef = 11
-  val String = 8
-  val Integer = 3
-  val Float = 4
-  val Long = 5
-  val Double = 6
-  val NameAndType = 12
-  val Utf8 = 1
-  val MethodHandle = 15
-  val MethodType = 16
-  val InvokeDynamic = 18
-
-}
 
 object ClassAccessFlags {
   val ACC_PUBLIC = 0x0001
@@ -36,7 +17,7 @@ object ClassAccessFlags {
   val ACC_ENUM = 0x4000
 }
 
-
+//URL [jar:file:/home/becker/hybris-platform-4.8/bin/extensions/douglas/lib/pm-api-3.0.jar!/de/douglas/pm/api/pantone/PantoneGetColorForArticleResponse$.class]
 
 object Parser {
 
@@ -50,7 +31,25 @@ object Parser {
 
     val rawClassFile = ClassFileParser.parse(bytes)
 
-    println(rawClassFile)
+    val methodRefs = rawClassFile.collect {
+      case methodRef: CPMethodref => methodRef
+    }
+
+    val externalInvocations = methodRefs.map { ref =>
+
+      val classTag = rawClassFile.collect { case x @CPClassTag(ref.classIndex, _) => x }.head
+      val nameAndType = rawClassFile.collect { case x @CPNameAndType(ref.nameAndType, _, _) => x }.head
+      val className = rawClassFile.collect { case CPUTF8(classTag.nameIndex, stringValue) => stringValue }.head
+      val methodName = rawClassFile.collect { case CPUTF8(nameAndType.nameIndex, stringValue) => stringValue }.head
+      val methodDescriptor = rawClassFile.collect { case CPUTF8(nameAndType.descriptorIndex, stringValue) => stringValue }.head
+      //println(s"Ref: $ref => Classtag: $classTag, className: $className NameAndType: $nameAndType, name: $methodName, descriptor: $methodDescriptor - together: $className.$methodName.$methodDescriptor")
+      s"$className.$methodName.$methodDescriptor"
+    }
+
+    println(externalInvocations)
+
+    // case class CPNameAndType(cpIndex: Short, nameIndex: Short, descriptorIndex: Short) extends CPInfo
+
 
     /*
     println(s"More class info: accessFlags: $accessFlags, thisClass: $thisClass, superClass: $superClass, interfacesCount: $interfacesCount")
@@ -101,5 +100,5 @@ object Parser {
 
 object Main extends App {
   //TestClasses.classes.foreach(c => Parser.parse(c))
-  Parser.parse()
+  Parser.parse("/home/becker/git/pm/pm-api/target/classes/de/douglas/pm/api/pantone/PantoneGetColorForArticleResponse$.class")
 }
