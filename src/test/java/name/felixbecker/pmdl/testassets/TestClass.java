@@ -15,6 +15,7 @@ public abstract class TestClass implements TestInterface, SecondTestInterface {
     public short testShort = 7;
     public boolean testBoolean = false;
     public byte testByte = 0x09;
+    public long superLong = 12345l;
 
     public static final String TEST_FINAL_STATIC_STRING_FIELD = "useless";
 

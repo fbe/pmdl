@@ -1,6 +1,6 @@
 package name.felixbecker.pmdl.parser.raw.model
 
-import name.felixbecker.pmdl.parser.raw.MethodInfo
+import name.felixbecker.pmdl.parser.raw.{CPInfo, AccessFlag, MethodInfo}
 
 // Representation of a raw class file, defined in https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html
 
@@ -10,7 +10,7 @@ case class ClassFile(
                       majorVersion: Short,
                       constantPoolCount: Short,
                       cpInfos: List[CPInfo],
-                      accessFlags: Short,
+                      accessFlags: List[AccessFlag],
                       thisClass: Short,
                       superClass: Short,
                       interfacesCount:Short,
@@ -28,7 +28,30 @@ case class ClassFile(
 
 
   override def toString: String = {
-    cpInfos.map(_.toString).mkString("\n")
+    val magicNumberAsString: String = "0x%02X".format(magicNumber)
+    s"""
+       | Magic number: $magicNumberAsString
+       | Version: $majorVersion.$minorVersion
+       | Constant pool count: $constantPoolCount
+       | Access Flags: ${accessFlags.map(_.name).mkString(", ")}
+       | This class: $thisClass (cp index)
+       | Super class: $superClass (cp index)
+       | Interfaces count: $interfacesCount
+       | Field count: $fieldCount
+       | Method count: $methodsCount
+       | Attributes count: $attributesCount
+       | =============================> Constant Pool ($constantPoolCount (-1)) <=============================
+       | ${cpInfos.mkString("\n ")}
+       | =============================> Interfaces ($interfacesCount) <=============================
+       | ${interfaces.mkString("\n ")}
+       | =============================> Fields ($fieldCount) <=============================
+       | ${fields.mkString("\n ")}
+       | =============================> Methods ($methodsCount) <=============================
+       | ${methods.mkString("\n ")}
+       | =============================> Attributes ($attributesCount) <=============================
+       | ${attributes.mkString("\n ")}
+       |
+     """.stripMargin
   }
 
   override def foreach[U](f: (Any) => U): Unit = {
@@ -50,4 +73,3 @@ case class ClassFile(
   }
 }
 
-trait CPInfo

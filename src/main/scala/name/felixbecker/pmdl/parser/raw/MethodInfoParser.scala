@@ -17,7 +17,16 @@ method_info {
     attribute_info attributes[attributes_count];
 }
  */
-case class MethodInfo(accessFlags: Short, nameIndex: Short, descriptorIndex: Short, attributesCount: Short, attributes: List[AttributeInfo])
+case class MethodInfo(accessFlags: Short, nameIndex: Short, descriptorIndex: Short, attributesCount: Short, attributes: List[AttributeInfo]){
+  override def toString: String =
+    s"""
+      | MethodInfo:
+      |   Access Flags: ${AccessFlags.shortToAccessFlags(accessFlags, AccessFlags.MethodAccessFlags).map(_.name).mkString(", ")}
+      |   Name Index: $nameIndex
+      |   Descriptor Index: $descriptorIndex
+      |   Attributes count: $attributesCount
+      |   ${attributes.mkString("\n    ")}""".stripMargin
+}
 
 class MethodInfoParser(methodsCount: Short) {
   def parse(bytes: ByteBuffer): List[MethodInfo] = {

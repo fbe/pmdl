@@ -3,9 +3,8 @@ package name.felixbecker.pmdl.parser.raw
 import java.nio.ByteBuffer
 import java.util
 
-import name.felixbecker.pmdl.parser.raw.model.CPInfo
 
-
+trait CPInfo
 case class CPClassTag(cpIndex: Short, nameIndex: Short) extends CPInfo
 case class CPFieldRef(cpIndex: Short, classIndex: Short, nameAndTypeIndex: Short) extends CPInfo
 case class CPMethodref(cpIndex: Short, classIndex: Short, nameAndType: Short) extends CPInfo
@@ -143,6 +142,8 @@ class ConstantPoolParser(constantPoolCount: Short) extends RawParser[List[CPInfo
 
           val longValue = bytes.getLong
           elements.add(CPLong(idx, longValue))
+          idx = (idx+1).toShort
+          elements.add(CPUnusedSlot(idx))
 
         case CPInfo.Double =>
 
@@ -155,9 +156,9 @@ class ConstantPoolParser(constantPoolCount: Short) extends RawParser[List[CPInfo
         */
 
 
-          idx = (idx+1).toShort
           val doubleValue = bytes.getDouble()
           elements.add(CPDouble(idx, doubleValue))
+          idx = (idx+1).toShort
           elements.add(CPUnusedSlot(idx)) // add unused slot
 
 
