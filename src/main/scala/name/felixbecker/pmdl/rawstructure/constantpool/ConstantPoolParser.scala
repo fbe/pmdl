@@ -1,12 +1,12 @@
 package name.felixbecker.pmdl.rawstructure.constantpool
 
 import java.nio.ByteBuffer
-import java.util
 
-import name.felixbecker.pmdl.parser.raw.{FromByteBuffer, RawParser}
 import name.felixbecker.pmdl.rawstructure.ConstantPool
 
-class ConstantPoolParser(constantPoolCount: Short) extends RawParser[ConstantPool] {
+import scala.annotation.tailrec
+
+class ConstantPoolParser(constantPoolCount: Short) {
 
   val elementCompanionsByTag = List[FromByteBuffer[_ <: CPInfo] with ConstantPoolElement](
     CPClassTag,
@@ -25,25 +25,37 @@ class ConstantPoolParser(constantPoolCount: Short) extends RawParser[ConstantPoo
   }.toMap
 
 
-  override def parse(bytes: ByteBuffer): ConstantPool = {
+  def parse(bytes: ByteBuffer): ConstantPool = {
+    parseRec(Map(), constantPoolCount, 1, bytes)
+  }
 
-    val elements = new util.ArrayList[CPInfo]()
 
-    var idx: Short = 1
+  @tailrec
+  private def parseRec(currentPoolElements: ConstantPool, constantPoolCount: Short, currentIndex: Short, bytes: ByteBuffer): ConstantPool = {
 
-    while (idx <= constantPoolCount) {
+    val elem = getOneConstantPoolElementFromByteBuffer(bytes, currentIndex)
+    val newConstantPool = currentPoolElements + (currentIndex -> elem.constantPoolElement)
 
-      val tag = bytes.get()
+    if(currentIndex == constantPoolCount-1) // -1 because max constant pool idx == size -1 (defined in spec)
+      currentPoolElements + (currentIndex -> elem.constantPoolElement)
+    else
+      parseRec(newConstantPool, constantPoolCount, (currentIndex + elem.slotCount).toShort, bytes)
 
-      val cpElementCompanion = elementCompanionsByTag.getOrElse(tag, throw new RuntimeException(s"Cannot parse constant pool - no Element with tag $tag known!"))
+  }
 
-      elements.add(cpElementCompanion.fromByteBuffer(bytes, idx))
 
-      idx = (idx + cpElementCompanion.requiredSlots).toShort
-    }
+  sealed case class ConstantPoolElementAndSlotCount(constantPoolElement: CPInfo, slotCount: Short)
 
-    import scala.collection.JavaConversions._
-    elements.map { e => e.cpIndex -> e }.toMap
+  private def getOneConstantPoolElementFromByteBuffer(byteBuffer : ByteBuffer, currentSlotIndex: Short) = {
+
+    val tag = byteBuffer.get()
+
+    val cpElementCompanion = elementCompanionsByTag.getOrElse(tag, throw new RuntimeException(s"Cannot parse constant pool - no Element with tag $tag known!"))
+
+    val elem = cpElementCompanion.fromByteBuffer(byteBuffer, currentSlotIndex)
+
+    ConstantPoolElementAndSlotCount(elem, cpElementCompanion.requiredSlots)
+
   }
 
 }

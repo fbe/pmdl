@@ -1,8 +1,7 @@
-package name.felixbecker.pmdl.parser.raw
+package name.felixbecker.pmdl.rawstructure.methods
 
-import java.nio.ByteBuffer
-
-import name.felixbecker.pmdl.parser.raw.model.AttributeInfo
+import name.felixbecker.pmdl.rawstructure.AccessFlags
+import name.felixbecker.pmdl.rawstructure.attributes.AttributeInfo
 
 /**
  * Created by becker on 10/11/15.
@@ -26,21 +25,4 @@ case class MethodInfo(accessFlags: Short, nameIndex: Short, descriptorIndex: Sho
       |   Descriptor Index: $descriptorIndex
       |   Attributes count: $attributesCount
       |   ${attributes.mkString("\n    ")}""".stripMargin
-}
-
-class MethodInfoParser(methodsCount: Short) {
-  def parse(bytes: ByteBuffer): List[MethodInfo] = {
-
-    (1 to methodsCount).map { _ =>
-
-      val accessFlags = bytes.getShort()
-      val nameIndex = bytes.getShort()
-      val descriptorIndex = bytes.getShort()
-      val attributesCount = bytes.getShort()
-      val attributes = new AttributeParser(attributesCount).parse(bytes)
-
-      MethodInfo(accessFlags, nameIndex, descriptorIndex, attributesCount, attributes)
-
-    }.toList
-  }
 }

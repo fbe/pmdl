@@ -1,4 +1,4 @@
-package name.felixbecker.pmdl.parser.raw
+package name.felixbecker.pmdl.rawstructure
 
 case class AccessFlag(name: String, byteValue: Short)
 

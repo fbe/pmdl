@@ -1,8 +1,8 @@
-package name.felixbecker.pmdl.parser.raw
+package name.felixbecker.pmdl.rawstructure.fields
 
 import java.nio.ByteBuffer
 
-import name.felixbecker.pmdl.parser.raw.model.{AttributeInfo, FieldInfo}
+import name.felixbecker.pmdl.rawstructure.attributes.AttributeInfo
 
 /**
  * Created by becker on 10/11/15.

@@ -1,9 +1,8 @@
 package name.felixbecker.pmdl
 
 import java.nio.ByteBuffer
-import java.nio.file.{Paths, Files}
+import java.nio.file.{Files, Paths}
 
-import name.felixbecker.pmdl.parser.raw._
 import name.felixbecker.pmdl.rawstructure.ClassFile
 
 
@@ -17,7 +16,7 @@ object Main extends App {
 
     val bytes = ByteBuffer.wrap(array)
 
-    val rawClassFile = ClassFileParser.parse(bytes)
+    val rawClassFile = ClassFile.fromByteBuffer(bytes)
 
     rawClassFile
   }

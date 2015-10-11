@@ -2,8 +2,6 @@ package name.felixbecker.pmdl.rawstructure.constantpool
 
 import java.nio.ByteBuffer
 
-import name.felixbecker.pmdl.parser.raw.FromByteBuffer
-
 /*
   CONSTANT_Double_info {
     u1 tag;
