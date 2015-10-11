@@ -2,7 +2,9 @@ package name.felixbecker.pmdl.parser.raw
 
 import java.nio.ByteBuffer
 
-import name.felixbecker.pmdl.parser.raw.model.{FieldInfo, ClassFile}
+import name.felixbecker.pmdl.parser.raw.model.FieldInfo
+import name.felixbecker.pmdl.rawstructure.ClassFile
+import name.felixbecker.pmdl.rawstructure.constantpool.{CPInfo, ConstantPoolParser}
 
 object ClassFileParser extends RawParser[ClassFile] {
 

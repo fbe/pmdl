@@ -1,6 +1,8 @@
-package name.felixbecker.pmdl.parser.raw.model
+package name.felixbecker.pmdl.rawstructure
 
-import name.felixbecker.pmdl.parser.raw.{CPInfo, AccessFlag, MethodInfo}
+import name.felixbecker.pmdl.parser.raw.model.{AttributeInfo, FieldInfo}
+import name.felixbecker.pmdl.parser.raw.{AccessFlag, MethodInfo}
+import name.felixbecker.pmdl.rawstructure.constantpool.CPInfo
 
 // Representation of a raw class file, defined in https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html
 
@@ -43,7 +45,7 @@ case class ClassFile(
        | =============================> Constant Pool ($constantPoolCount (-1)) <=============================
        | ${cpInfos.mkString("\n ")}
        | =============================> Interfaces ($interfacesCount) <=============================
-       | ${interfaces.map(x => s"Constant pool reference: $x").mkString("\n ")}
+       | ${interfaces.map(x => s"Constant pool reference: $x").mkString("\n ")}     // TODO Own CP case class
        | =============================> Fields ($fieldCount) <=============================
        | ${fields.mkString("\n ")}
        | =============================> Methods ($methodsCount) <=============================

@@ -4,11 +4,12 @@ import java.nio.ByteBuffer
 import java.nio.file.{Paths, Files}
 
 import name.felixbecker.pmdl.parser.raw._
-import name.felixbecker.pmdl.parser.raw.model.ClassFile
+import name.felixbecker.pmdl.rawstructure.ClassFile
 
-object Parser {
 
-  def parse(testClassFile: String = "target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/TestClass.class"): ClassFile ={
+object Main extends App {
+
+  def getClassFile(testClassFile: String = "target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/TestClass.class"): ClassFile ={
 
     val array = Files.readAllBytes(Paths.get(testClassFile))
 
@@ -21,10 +22,10 @@ object Parser {
     rawClassFile
   }
 
-}
+  val parsedClasses = TestClasses.classes.map(getClassFile)
+  println(s"Parsed classes: ${parsedClasses.size}")
+  //println(getClassFile())
 
-object Main extends App {
-  //TestClasses.classes.foreach(c => Parser.parse(c))
-  println(Parser.parse())
-  //Parser.parse("/home/becker/git/pm/pm-api/target/classes/de/douglas/pm/api/pantone/PantoneGetColorForArticleResponse$.class")
+  println(parsedClasses.head)
+
 }
