@@ -1,10 +1,11 @@
 package name.felixbecker.pmdl.rawstructure
 
 import java.nio.ByteBuffer
+
 import name.felixbecker.pmdl.rawstructure.attributes.AttributeInfo
-import name.felixbecker.pmdl.rawstructure.constantpool.{ConstantPoolParser, CPInfo}
-import name.felixbecker.pmdl.rawstructure.fields.{FieldInfo, AttributeParser, FieldInfoParser}
-import name.felixbecker.pmdl.rawstructure.methods.{MethodInfoParser, MethodInfo}
+import name.felixbecker.pmdl.rawstructure.constantpool.{CPInfo, ConstantPoolParser}
+import name.felixbecker.pmdl.rawstructure.fields.{FieldInfo, FieldInfoParser}
+import name.felixbecker.pmdl.rawstructure.methods.{MethodInfo, MethodInfoParser}
 
 // Representation of a raw class file, defined in https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html
 
@@ -47,7 +48,7 @@ object ClassFile {
     val methods: List[MethodInfo] = new MethodInfoParser(methodsCount).parse(bytes)
 
     val attributesCount = bytes.getShort()
-    val attributes = new AttributeParser(attributesCount).parse(bytes)
+    val attributes = AttributeInfo.fromByteBuffer(bytes, attributesCount)
 
     assert(bytes.remaining() == 0)
 

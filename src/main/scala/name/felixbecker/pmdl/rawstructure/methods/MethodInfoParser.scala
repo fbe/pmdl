@@ -2,7 +2,7 @@ package name.felixbecker.pmdl.rawstructure.methods
 
 import java.nio.ByteBuffer
 
-import name.felixbecker.pmdl.rawstructure.fields.AttributeParser
+import name.felixbecker.pmdl.rawstructure.attributes.AttributeInfo
 
 
 class MethodInfoParser(methodsCount: Short) {
@@ -14,7 +14,7 @@ class MethodInfoParser(methodsCount: Short) {
       val nameIndex = bytes.getShort()
       val descriptorIndex = bytes.getShort()
       val attributesCount = bytes.getShort()
-      val attributes = new AttributeParser(attributesCount).parse(bytes)
+      val attributes = AttributeInfo.fromByteBuffer(bytes, attributesCount)
 
       MethodInfo(accessFlags, nameIndex, descriptorIndex, attributesCount, attributes)
 

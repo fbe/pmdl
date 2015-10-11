@@ -27,7 +27,7 @@ class FieldInfoParser(fieldCount: Short) {
       val nameIndex = bytes.getShort()
       val descriptorIndex = bytes.getShort()
       val attributesCount = bytes.getShort()
-      val attributes = new AttributeParser(attributesCount).parse(bytes)
+      val attributes = AttributeInfo.fromByteBuffer(bytes, attributesCount)
       FieldInfo(accessFlags, nameIndex, descriptorIndex, attributesCount, attributes)
     }.toList
 
@@ -35,23 +35,3 @@ class FieldInfoParser(fieldCount: Short) {
 
 }
 
-/*
-  attribute_info {
-  u2 attribute_name_index;
-  u4 attribute_length;
-  u1 info[attribute_length];
-}
-*/
-class AttributeParser(attributesCount: Short) {
-
-  def parse(bytes: ByteBuffer): List[AttributeInfo] = {
-
-    (1 to attributesCount).map { _ =>
-      val attributeNameIndex = bytes.getShort()
-      val attributeLength = bytes.getInt()
-      val attributeBytes = (1 to attributeLength).map { _ => bytes.get()}.toArray
-      AttributeInfo(attributeNameIndex, attributeLength, attributeBytes)
-    }.toList
-
-  }
-}
