@@ -4,19 +4,64 @@ import java.nio.ByteBuffer
 import java.util
 
 
-trait CPInfo
-case class CPClassTag(cpIndex: Short, nameIndex: Short) extends CPInfo
-case class CPFieldRef(cpIndex: Short, classIndex: Short, nameAndTypeIndex: Short) extends CPInfo
-case class CPMethodref(cpIndex: Short, classIndex: Short, nameAndType: Short) extends CPInfo
-case class CPInterfaceMethodRef(cpIndex: Short, classIndex: Short, nameAndTypeIndex: Short) extends CPInfo
-case class CPString(cpIndex: Short, stringIndex: Short) extends CPInfo
-case class CPInteger(cpIndex: Short, value: Int) extends CPInfo
-case class CPLong(cpIndex: Short, value: Long) extends CPInfo
-case class CPFloat(cpIndex: Short, value: Float) extends CPInfo
-case class CPDouble(cpIndex: Short, value: Double) extends CPInfo
-case class CPUnusedSlot(cpIndex: Short) extends CPInfo // Used for doubles / longs
-case class CPNameAndType(cpIndex: Short, nameIndex: Short, descriptorIndex: Short) extends CPInfo
-case class CPUTF8(cpIndex: Short, value: String) extends CPInfo
+trait CPInfo {
+  def cpIndex: Short
+
+  def toStringInternal: String
+
+  override def toString = {
+    val formattedCpIndex = "%05d".format(cpIndex)
+    val simpleClassName = getClass.getSimpleName.substring(2)
+    s"[$formattedCpIndex] $simpleClassName - $toStringInternal"
+  }
+}
+case class CPClassTag(cpIndex: Short, nameIndex: Short) extends CPInfo {
+  override def toStringInternal: String = s"Name: $nameIndex"
+}
+
+case class CPFieldRef(cpIndex: Short, classIndex: Short, nameAndTypeIndex: Short) extends CPInfo {
+  override def toStringInternal: String = s"Class: $classIndex, NameAndType: $nameAndTypeIndex"
+}
+
+case class CPMethodref(cpIndex: Short, classIndex: Short, nameAndType: Short) extends CPInfo {
+  override def toStringInternal: String = s"Class: $classIndex, NameAndType: $nameAndType"
+}
+
+case class CPInterfaceMethodRef(cpIndex: Short, classIndex: Short, nameAndTypeIndex: Short) extends CPInfo {
+  override def toStringInternal: String = s"Class: $classIndex, NameAndType: $nameAndTypeIndex"
+}
+
+case class CPString(cpIndex: Short, stringIndex: Short) extends CPInfo {
+  override def toStringInternal: String = s"String: $stringIndex"
+}
+
+case class CPInteger(cpIndex: Short, value: Int) extends CPInfo {
+  override def toStringInternal: String = s"$value"
+}
+
+case class CPLong(cpIndex: Short, value: Long) extends CPInfo {
+  override def toStringInternal: String = s"$value"
+}
+
+case class CPFloat(cpIndex: Short, value: Float) extends CPInfo {
+  override def toStringInternal: String = s"$value"
+}
+
+case class CPDouble(cpIndex: Short, value: Double) extends CPInfo {
+  override def toStringInternal: String = s"$value"
+}
+
+case class CPUnusedSlot(cpIndex: Short) extends CPInfo {
+  override def toStringInternal: String = " X "
+}// Used for doubles / longs
+
+case class CPNameAndType(cpIndex: Short, nameIndex: Short, descriptorIndex: Short) extends CPInfo {
+  override def toStringInternal: String = s"Name: $nameIndex, Descriptor: $descriptorIndex"
+}
+
+case class CPUTF8(cpIndex: Short, value: String) extends CPInfo {
+  override def toStringInternal: String = s"'$value'"
+}
 
 object CPInfo {
 

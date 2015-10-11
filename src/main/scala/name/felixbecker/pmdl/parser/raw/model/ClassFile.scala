@@ -43,7 +43,7 @@ case class ClassFile(
        | =============================> Constant Pool ($constantPoolCount (-1)) <=============================
        | ${cpInfos.mkString("\n ")}
        | =============================> Interfaces ($interfacesCount) <=============================
-       | ${interfaces.mkString("\n ")}
+       | ${interfaces.map(x => s"Constant pool reference: $x").mkString("\n ")}
        | =============================> Fields ($fieldCount) <=============================
        | ${fields.mkString("\n ")}
        | =============================> Methods ($methodsCount) <=============================
