@@ -18,9 +18,9 @@ object CPInfo {
 
   val ClassTag = CPClassTag.getConstantPoolTag
   val Fieldref = CPFieldRef.getConstantPoolTag
-  val Methodref = CPMethodref.getConstantPoolTag
+  val Methodref = CPMethodRef.getConstantPoolTag
   val InterfaceMethodRef = CPInterfaceMethodRef.getConstantPoolTag
-  val String = CPString.getConstantPoolTag
+  val String = CPStringInfo.getConstantPoolTag
   val Integer = CPInteger.getConstantPoolTag
   val Float = CPFloat.getConstantPoolTag
   val Long = CPLong.getConstantPoolTag

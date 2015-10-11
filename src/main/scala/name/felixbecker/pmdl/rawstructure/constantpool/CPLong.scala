@@ -4,6 +4,13 @@ import java.nio.ByteBuffer
 
 import name.felixbecker.pmdl.parser.raw.FromByteBuffer
 
+/*
+  CONSTANT_Long_info {
+    u1 tag;
+    u4 high_bytes;
+    u4 low_bytes;
+  }
+*/
 
 case class CPLong(cpIndex: Short, value: Long) extends CPInfo {
   override def toStringInternal: String = s"$value"
@@ -12,16 +19,10 @@ case class CPLong(cpIndex: Short, value: Long) extends CPInfo {
 object CPLong extends FromByteBuffer[CPLong] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPLong = {
-    /*
-             CONSTANT_Long_info {
-               u1 tag;
-               u4 high_bytes;
-               u4 low_bytes;
-             }
-          */
 
     val longValue = byteBuffer.getLong
     CPLong(constantPoolIndex, longValue)
+
   }
 
   override def getConstantPoolTag: Byte = 5

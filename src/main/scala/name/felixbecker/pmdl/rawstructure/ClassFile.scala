@@ -11,7 +11,7 @@ case class ClassFile(
                       minorVersion: Short,
                       majorVersion: Short,
                       constantPoolCount: Short,
-                      cpInfos: List[CPInfo],
+                      cpInfos: Map[Short, CPInfo],
                       accessFlags: List[AccessFlag],
                       thisClass: Short,
                       superClass: Short,
@@ -43,7 +43,7 @@ case class ClassFile(
        | Method count: $methodsCount
        | Attributes count: $attributesCount
        | =============================> Constant Pool ($constantPoolCount (-1)) <=============================
-       | ${cpInfos.mkString("\n ")}
+       | ${cpInfos.map{case (k,v) => v}.toList.sortBy(c => c.cpIndex).mkString("\n ")}
        | =============================> Interfaces ($interfacesCount) <=============================
        | ${interfaces.map(x => s"Constant pool reference: $x").mkString("\n ")}     // TODO Own CP case class
        | =============================> Fields ($fieldCount) <=============================

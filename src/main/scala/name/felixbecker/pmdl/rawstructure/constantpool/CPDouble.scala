@@ -4,6 +4,14 @@ import java.nio.ByteBuffer
 
 import name.felixbecker.pmdl.parser.raw.FromByteBuffer
 
+/*
+  CONSTANT_Double_info {
+    u1 tag;
+    u4 high_bytes;
+    u4 low_bytes;
+  }
+*/
+
 case class CPDouble(cpIndex: Short, value: Double) extends CPInfo {
   override def toStringInternal: String = s"$value"
 }
@@ -12,17 +20,9 @@ object CPDouble extends FromByteBuffer[CPDouble] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPDouble = {
 
-    /*
-      CONSTANT_Double_info {
-        u1 tag;
-        u4 high_bytes;
-        u4 low_bytes;
-      }
-  */
-
-
     val doubleValue = byteBuffer.getDouble()
     CPDouble(constantPoolIndex, doubleValue)
+
   }
 
   override def getConstantPoolTag: Byte = 6

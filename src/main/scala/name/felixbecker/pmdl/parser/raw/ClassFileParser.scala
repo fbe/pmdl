@@ -3,11 +3,10 @@ package name.felixbecker.pmdl.parser.raw
 import java.nio.ByteBuffer
 
 import name.felixbecker.pmdl.parser.raw.model.FieldInfo
-import name.felixbecker.pmdl.rawstructure.ClassFile
+import name.felixbecker.pmdl.rawstructure.{ConstantPool, ClassFile}
 import name.felixbecker.pmdl.rawstructure.constantpool.{CPInfo, ConstantPoolParser}
 
 object ClassFileParser extends RawParser[ClassFile] {
-
 
   override def parse(bytes: ByteBuffer): ClassFile = {
 
@@ -26,7 +25,7 @@ object ClassFileParser extends RawParser[ClassFile] {
     }*/
 
     val constantPoolCount = bytes.getShort()
-    val cpInfos: List[CPInfo] = new ConstantPoolParser((constantPoolCount-1).toShort).parse(bytes)
+    val cpInfos: ConstantPool = new ConstantPoolParser((constantPoolCount-1).toShort).parse(bytes)
     val accessFlags: List[AccessFlag] = AccessFlags.shortToAccessFlags(bytes.getShort(), AccessFlags.ClassAccessFlags)
     val thisClass = bytes.getShort()
     val superClass = bytes.getShort()

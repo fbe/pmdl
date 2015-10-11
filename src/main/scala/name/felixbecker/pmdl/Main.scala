@@ -22,10 +22,10 @@ object Main extends App {
     rawClassFile
   }
 
-  val parsedClasses = TestClasses.classes.map(getClassFile)
-  println(s"Parsed classes: ${parsedClasses.size}")
-  //println(getClassFile())
+  //val parsedClasses = TestClasses.classes.map(getClassFile)
+  //println(s"Parsed classes: ${parsedClasses.size}")
+  println(getClassFile())
 
-  println(parsedClasses.head)
+  //println(parsedClasses.head)
 
 }
