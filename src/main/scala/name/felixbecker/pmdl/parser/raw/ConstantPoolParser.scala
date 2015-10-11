@@ -241,14 +241,11 @@ class ConstantPoolParser(constantPoolCount: Short) extends RawParser[List[CPInfo
           elements.add(CPUTF8(idx, new String(stringBytes)))
 
         case CPInfo.MethodHandle =>
-          println(s"[$idx] MethodHandle: ")
-        // TODO implement (and check if used by the java compiler)
+          throw new NotImplementedError("Parsing method handles not implemented")  // TODO
         case CPInfo.MethodType =>
-          println(s"[$idx] MethodType: ")
-        // TODO implement (and check if used by the java compiler)
+          throw new NotImplementedError("Parsing method type not implemented")  // TODO
         case CPInfo.InvokeDynamic =>
-          println(s"[$idx] InvokeDynamic: ")
-        // TODO implement (and check if used by the java compiler)
+          throw new NotImplementedError("Parsing invoke dynamic not implemented")  // TODO
       }
 
       idx = (idx+1).toShort
