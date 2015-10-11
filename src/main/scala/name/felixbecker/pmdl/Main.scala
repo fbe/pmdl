@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.file.{Paths, Files}
 
 import name.felixbecker.pmdl.parser.raw._
+import name.felixbecker.pmdl.parser.raw.model.ClassFile
 
 
 object ClassAccessFlags {
@@ -21,7 +22,7 @@ object ClassAccessFlags {
 
 object Parser {
 
-  def parse(testClassFile: String = "target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/TestClass.class"): Unit ={
+  def parse(testClassFile: String = "target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/TestClass.class"): ClassFile ={
 
     val array = Files.readAllBytes(Paths.get(testClassFile))
 
@@ -73,6 +74,8 @@ object Parser {
     println(s"Remaining bytes: ${bytes.remaining()} byte")
 */
     //parseFieldInfos(bytes)
+
+    rawClassFile
   }
 
   def parseFieldInfos(bytes: ByteBuffer): Unit ={
@@ -100,5 +103,6 @@ object Parser {
 
 object Main extends App {
   //TestClasses.classes.foreach(c => Parser.parse(c))
-  Parser.parse("/home/becker/git/pm/pm-api/target/classes/de/douglas/pm/api/pantone/PantoneGetColorForArticleResponse$.class")
+  Parser.parse().foreach(println)
+  //Parser.parse("/home/becker/git/pm/pm-api/target/classes/de/douglas/pm/api/pantone/PantoneGetColorForArticleResponse$.class")
 }

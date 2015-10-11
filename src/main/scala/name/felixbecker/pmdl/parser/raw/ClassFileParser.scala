@@ -2,7 +2,7 @@ package name.felixbecker.pmdl.parser.raw
 
 import java.nio.ByteBuffer
 
-import name.felixbecker.pmdl.parser.raw.model.{CPInfo, ClassFile}
+import name.felixbecker.pmdl.parser.raw.model.{FieldInfo, CPInfo, ClassFile}
 
 object ClassFileParser extends RawParser[ClassFile] {
 
@@ -38,7 +38,18 @@ object ClassFileParser extends RawParser[ClassFile] {
 
     val fieldCount = bytes.getShort()
 
-    ClassFile(magicNumber, minorVersion, majorVersion, constantPoolCount, cpInfos, accessFlags, thisClass, superClass, interfacesCount, interfaces, fieldCount)
+    val fields: List[FieldInfo] = new FieldInfoParser(fieldCount).parse(bytes)
+
+    val methodsCount = bytes.getShort()
+
+    val methods: List[MethodInfo] = new MethodInfoParser(methodsCount).parse(bytes)
+
+    val attributesCount = bytes.getShort()
+    val attributes = new AttributeParser(attributesCount).parse(bytes)
+
+    assert(bytes.remaining() == 0)
+
+    ClassFile(magicNumber, minorVersion, majorVersion, constantPoolCount, cpInfos, accessFlags, thisClass, superClass, interfacesCount, interfaces, fieldCount, fields, methodsCount, methods, attributesCount, attributes)
 
   }
 }

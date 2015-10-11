@@ -16,6 +16,8 @@ public abstract class TestClass implements TestInterface, SecondTestInterface {
     public boolean testBoolean = false;
     public byte testByte = 0x09;
 
+    public static final String TEST_FINAL_STATIC_STRING_FIELD = "useless";
+
     private final SecondTestInterface secondTestInterface;
 
     public TestClass(SecondTestInterface secondTestInterface){
