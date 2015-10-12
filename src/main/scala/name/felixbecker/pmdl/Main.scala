@@ -25,8 +25,8 @@ object Main extends App {
   //val parsedClasses = TestClasses.classes.map(getClassFile)
   //println(s"Parsed classes: ${parsedClasses.size}")
 
-  getClassFile()
-  //println(getClassFile())
+  //getClassFile()
+  println(getClassFile())
 
   //println(parsedClasses.head)
 
