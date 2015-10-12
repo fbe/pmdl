@@ -2,6 +2,8 @@ package name.felixbecker.pmdl.rawstructure.attributes
 
 import java.nio.ByteBuffer
 
+import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
+
 
 /*
 
@@ -12,6 +14,9 @@ Attributes are used in the ClassFile, field_info, method_info, and Code_attribut
     u4 attribute_length;
     u1 info[attribute_length];
   }
+
+  
+
 
  */
 
@@ -26,16 +31,46 @@ case class AttributeInfo(attributeNameIndex: Short, attributeLength: Int, attrib
 
 object AttributeInfo {
 
-  def fromByteBuffer(byteBuffer: ByteBuffer, attributesCount: Short): List[AttributeInfo] = {
+
+  val predefinedAttributes = List(
+    "Attribute",
+    "ConstantValue",
+    "Code",
+    "StackMapTable",
+    "Exceptions",
+    "InnerClasses",
+    "EnclosingMethod",
+    "Synthetic",
+    "Signature",
+    "SourceFile",
+    "SourceDebugExtension",
+    "LineNumberTable",
+    "LocalVariableTable",
+    "LocalVariableTypeTable",
+    "Deprecated",
+    "RuntimeVisibleAnnotations",
+    "RuntimeInvisibleAnnotations",
+    "RuntimeVisibleParameterAnnotations",
+    "RuntimeInvisibleParameterAnnotations",
+    "AnnotationDefault",
+    "BootstrapMethods"
+  )
+
+
+  def fromByteBuffer(byteBuffer: ByteBuffer, attributesCount: Short, constantPool: ConstantPool): List[AttributeInfo] = {
     (1 to attributesCount).map { _ =>
-      fromByteBuffer(byteBuffer)
+      fromByteBuffer(byteBuffer, constantPool)
     }.toList
   }
 
-  def fromByteBuffer(byteBuffer: ByteBuffer): AttributeInfo = {
+  private def fromByteBuffer(byteBuffer: ByteBuffer, constantPool: ConstantPool): AttributeInfo = {
     val attributeNameIndex = byteBuffer.getShort()
     val attributeLength = byteBuffer.getInt()
     val attributeBytes = (1 to attributeLength).map { _ => byteBuffer.get() }.toArray
+
+
+    println("Attribute info: " + constantPool.getString(attributeNameIndex))
+
     AttributeInfo(attributeNameIndex, attributeLength, attributeBytes)
   }
 

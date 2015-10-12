@@ -3,6 +3,7 @@ package name.felixbecker.pmdl.rawstructure.fields
 import java.nio.ByteBuffer
 
 import name.felixbecker.pmdl.rawstructure.attributes.AttributeInfo
+import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 
 /**
  * Created by becker on 10/11/15.
@@ -18,7 +19,7 @@ attribute_info attributes[attributes_count];
 }
 */
 
-class FieldInfoParser(fieldCount: Short) {
+class FieldInfoParser(fieldCount: Short, constantPool: ConstantPool) {
 
   def parse(bytes: ByteBuffer): List[FieldInfo] = {
 
@@ -27,7 +28,7 @@ class FieldInfoParser(fieldCount: Short) {
       val nameIndex = bytes.getShort()
       val descriptorIndex = bytes.getShort()
       val attributesCount = bytes.getShort()
-      val attributes = AttributeInfo.fromByteBuffer(bytes, attributesCount)
+      val attributes = AttributeInfo.fromByteBuffer(bytes, attributesCount, constantPool)
       FieldInfo(accessFlags, nameIndex, descriptorIndex, attributesCount, attributes)
     }.toList
 

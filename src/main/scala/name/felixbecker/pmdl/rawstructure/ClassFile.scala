@@ -3,7 +3,7 @@ package name.felixbecker.pmdl.rawstructure
 import java.nio.ByteBuffer
 
 import name.felixbecker.pmdl.rawstructure.attributes.AttributeInfo
-import name.felixbecker.pmdl.rawstructure.constantpool.{CPInfo, ConstantPoolParser}
+import name.felixbecker.pmdl.rawstructure.constantpool.{CPInfo, ConstantPool}
 import name.felixbecker.pmdl.rawstructure.fields.{FieldInfo, FieldInfoParser}
 import name.felixbecker.pmdl.rawstructure.methods.{MethodInfo, MethodInfoParser}
 
@@ -27,7 +27,7 @@ object ClassFile {
     }*/
 
     val constantPoolCount = bytes.getShort()
-    val cpInfos: ConstantPool = new ConstantPoolParser(constantPoolCount.toShort).parse(bytes)
+    val constantPool: ConstantPool = ConstantPool.parseFromByteBuffer(bytes, constantPoolCount)
     val accessFlags: List[AccessFlag] = AccessFlags.shortToAccessFlags(bytes.getShort(), AccessFlags.ClassAccessFlags)
     val thisClass = bytes.getShort()
     val superClass = bytes.getShort()
@@ -41,18 +41,18 @@ object ClassFile {
 
     val fieldCount = bytes.getShort()
 
-    val fields: List[FieldInfo] = new FieldInfoParser(fieldCount).parse(bytes)
+    val fields: List[FieldInfo] = new FieldInfoParser(fieldCount, constantPool).parse(bytes)
 
     val methodsCount = bytes.getShort()
 
-    val methods: List[MethodInfo] = new MethodInfoParser(methodsCount).parse(bytes)
+    val methods: List[MethodInfo] = new MethodInfoParser(methodsCount).parse(bytes, constantPool)
 
     val attributesCount = bytes.getShort()
-    val attributes = AttributeInfo.fromByteBuffer(bytes, attributesCount)
+    val attributes = AttributeInfo.fromByteBuffer(bytes, attributesCount, constantPool)
 
     assert(bytes.remaining() == 0)
 
-    ClassFile(magicNumber, minorVersion, majorVersion, constantPoolCount, cpInfos, accessFlags, thisClass, superClass, interfacesCount, interfaces, fieldCount, fields, methodsCount, methods, attributesCount, attributes)
+    ClassFile(magicNumber, minorVersion, majorVersion, constantPoolCount, constantPool, accessFlags, thisClass, superClass, interfacesCount, interfaces, fieldCount, fields, methodsCount, methods, attributesCount, attributes)
   }
 
 }
@@ -62,7 +62,7 @@ case class ClassFile(
                       minorVersion: Short,
                       majorVersion: Short,
                       constantPoolCount: Short,
-                      cpInfos: Map[Short, CPInfo],
+                      constantPool: ConstantPool,
                       accessFlags: List[AccessFlag],
                       thisClass: Short,
                       superClass: Short,
@@ -94,7 +94,7 @@ case class ClassFile(
        | Method count: $methodsCount
        | Attributes count: $attributesCount
        | =============================> Constant Pool ($constantPoolCount (-1)) <=============================
-       | ${cpInfos.map{case (k,v) => v}.toList.sortBy(c => c.cpIndex).mkString("\n ")}
+       | ${constantPool.elements.map{case (k,v) => v}.toList.sortBy(c => c.cpIndex).mkString("\n ")}
        | =============================> Interfaces ($interfacesCount) <=============================
        | ${interfaces.map(x => s"Constant pool reference: $x").mkString("\n ")}     // TODO Own CP case class
        | =============================> Fields ($fieldCount) <=============================
@@ -112,7 +112,7 @@ case class ClassFile(
     f(minorVersion)
     f(majorVersion)
     f(constantPoolCount)
-    cpInfos.foreach(f)
+    constantPool.foreach(f)
     f(accessFlags)
     f(superClass)
     f(interfacesCount)

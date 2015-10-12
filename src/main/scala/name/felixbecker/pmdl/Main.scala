@@ -4,6 +4,7 @@ import java.nio.ByteBuffer
 import java.nio.file.{Files, Paths}
 
 import name.felixbecker.pmdl.rawstructure.ClassFile
+import name.felixbecker.pmdl.rawstructure.attributes.AttributeInfo
 
 
 object Main extends App {
@@ -23,7 +24,9 @@ object Main extends App {
 
   //val parsedClasses = TestClasses.classes.map(getClassFile)
   //println(s"Parsed classes: ${parsedClasses.size}")
-  println(getClassFile())
+
+  getClassFile()
+  //println(getClassFile())
 
   //println(parsedClasses.head)
 

@@ -2,11 +2,24 @@ package name.felixbecker.pmdl.rawstructure.constantpool
 
 import java.nio.ByteBuffer
 
-import name.felixbecker.pmdl.rawstructure.ConstantPool
-
 import scala.annotation.tailrec
 
-class ConstantPoolParser(constantPoolCount: Short) {
+case class ConstantPool(elements: Map[Short, CPInfo]) extends Traversable[Any] {
+
+  override def foreach[U](f: (Any) => U): Unit = {
+    elements.values.foreach(f)
+  }
+
+  def getString(index: Short): String = {
+    elements.getOrElse(index, throw new RuntimeException(s"Constant pool element on index $index not found!")) match {
+      case x : CPUTF8 => x.value
+      case unknown => throw new RuntimeException(s"Requested a CPUTF8 String from constant pool index $index - another type found: $unknown")
+    }
+  }
+
+}
+
+object ConstantPool {
 
   val elementCompanionsByTag = List[FromByteBuffer[_ <: CPInfo] with ConstantPoolElement](
     CPClassTag,
@@ -25,13 +38,8 @@ class ConstantPoolParser(constantPoolCount: Short) {
   }.toMap
 
 
-  def parse(bytes: ByteBuffer): ConstantPool = {
-    parseRec(Map(), constantPoolCount, 1, bytes)
-  }
-
-
   @tailrec
-  private def parseRec(currentPoolElements: ConstantPool, constantPoolCount: Short, currentIndex: Short, bytes: ByteBuffer): ConstantPool = {
+  private def parseRec(currentPoolElements: Map[Short, CPInfo], constantPoolCount: Short, currentIndex: Short, bytes: ByteBuffer): Map[Short, CPInfo] = {
 
     val elem = getOneConstantPoolElementFromByteBuffer(bytes, currentIndex)
     val newConstantPool = currentPoolElements + (currentIndex -> elem.constantPoolElement)
@@ -42,7 +50,6 @@ class ConstantPoolParser(constantPoolCount: Short) {
       parseRec(newConstantPool, constantPoolCount, (currentIndex + elem.slotCount).toShort, bytes)
 
   }
-
 
   sealed case class ConstantPoolElementAndSlotCount(constantPoolElement: CPInfo, slotCount: Short)
 
@@ -58,4 +65,9 @@ class ConstantPoolParser(constantPoolCount: Short) {
 
   }
 
+
+  def parseFromByteBuffer(byteBuffer: ByteBuffer, constantPoolCount: Short): ConstantPool = {
+    ConstantPool(parseRec(Map(), constantPoolCount, 1, byteBuffer))
+  }
 }
+

@@ -27,8 +27,12 @@ public abstract class TestClass implements TestInterface, SecondTestInterface {
 
     @Override
     public void foo() {
-        System.out.println("Bar");
-        secondTestInterface.secondTestIfMethod();
+        try {
+            System.out.println("Bar");
+            secondTestInterface.secondTestIfMethod();
+        } catch(RuntimeException e){
+            throw new RuntimeException("bar");
+        }
     }
 
     @Override
@@ -49,6 +53,7 @@ public abstract class TestClass implements TestInterface, SecondTestInterface {
             System.out.println("Simply do nothing");
         } else {
             System.out.println("Do even more nothing!");
+            throw new IllegalStateException("uha");
         }
     }
 }
