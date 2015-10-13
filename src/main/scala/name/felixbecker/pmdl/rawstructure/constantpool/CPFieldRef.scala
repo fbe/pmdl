@@ -14,7 +14,7 @@ case class CPFieldRef(cpIndex: Short, classIndex: Short, nameAndTypeIndex: Short
   override def toStringInternal: String = s"Class: $classIndex, NameAndType: $nameAndTypeIndex"
 }
 
-object CPFieldRef extends FromByteBuffer[CPFieldRef] with ConstantPoolElement {
+object CPFieldRef extends CPElementFromByteBuffer[CPFieldRef] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPFieldRef = {
 

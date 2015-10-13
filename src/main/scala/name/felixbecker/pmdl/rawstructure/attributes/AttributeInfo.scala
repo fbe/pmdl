@@ -20,16 +20,23 @@ Attributes are used in the ClassFile, field_info, method_info, and Code_attribut
 
  */
 
-case class AttributeInfo(attributeNameIndex: Short, attributeLength: Int, attributeBytes: Array[Byte]) {
-  override def toString: String =
-    s"""
-       | Attribute:
-       |   Attribute name index: $attributeNameIndex
-       |   Attribute length: $attributeLength
-       |   ... some bytes (Parse me =))""".stripMargin
-}
+
+
+
+trait AttributeInfo
 
 object AttributeInfo {
+
+
+  val attributeInfoCompanions = List[AttributeInfoFromByteBuffer[_ <: AttributeInfo]] (
+    CodeAttribute,
+    ConstantValueAttribute,
+    LineNumberTableAttribute,
+    LocalVariableTableAttribute,
+    RuntimeInvisibleAnnotationsAttribute,
+    SourceFileAttribute,
+    StackMapTableAttribute
+  ).map(a => a.getAttributeName -> a).toMap[String, AttributeInfoFromByteBuffer[_ <: AttributeInfo]]
 
 
   val predefinedAttributes = List(
@@ -70,21 +77,9 @@ object AttributeInfo {
 
     val attributeName = constantPool.getString(attributeNameIndex)
 
-    attributeName match {
-      case "Code" =>
-        CodeAttribute.parseFromBytes(ByteBuffer.wrap(attributeBytes), constantPool)
-      case "LineNumberTable" =>
-        LineNumberTableAttribute.parseFromBytes(ByteBuffer.wrap(attributeBytes), constantPool)
-      case "ConstantValue" => ConstantValueAttribute.parseFromByteBuffer(ByteBuffer.wrap(attributeBytes), constantPool)
-      case "LocalVariableTable" => LocalVariableTableAttribute.parseFromByteBuffer(ByteBuffer.wrap(attributeBytes), constantPool)
-      case "SourceFile" => SourceFileAttribute.parseFromByteBuffer(ByteBuffer.wrap(attributeBytes), constantPool)
-      case "RuntimeInvisibleAnnotations" => RuntimeInvisibleAnnotationsAttribute.parseFromByteBuffer(ByteBuffer.wrap(attributeBytes), constantPool)
-      case x => println(s"other attribute, $attributeName")
-    }
+    val attributeCompanion = attributeInfoCompanions.getOrElse(attributeName, throw new RuntimeException(s"Cannot parse Attribute with name $attributeName - not known!"))
 
-    //println(s"Attribute info: $attributeName")
-
-    AttributeInfo(attributeNameIndex, attributeLength, attributeBytes)
+    attributeCompanion.fromByteBuffer(ByteBuffer.wrap(attributeBytes), constantPool)
   }
 
 }

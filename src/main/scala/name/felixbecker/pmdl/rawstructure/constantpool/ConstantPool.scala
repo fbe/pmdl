@@ -21,7 +21,7 @@ case class ConstantPool(elements: Map[Short, CPInfo]) extends Traversable[Any] {
 
 object ConstantPool {
 
-  val elementCompanionsByTag = List[FromByteBuffer[_ <: CPInfo] with ConstantPoolElement](
+  val elementCompanionsByTag = List[CPElementFromByteBuffer[_ <: CPInfo] with ConstantPoolElement](
     CPClassTag,
     CPFieldRef,
     CPMethodRef,

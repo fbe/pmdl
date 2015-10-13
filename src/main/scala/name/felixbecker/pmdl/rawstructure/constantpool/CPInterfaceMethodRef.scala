@@ -14,7 +14,7 @@ case class CPInterfaceMethodRef(cpIndex: Short, classIndex: Short, nameAndTypeIn
   override def toStringInternal: String = s"Class: $classIndex, NameAndType: $nameAndTypeIndex"
 }
 
-object CPInterfaceMethodRef extends FromByteBuffer[CPInterfaceMethodRef] with ConstantPoolElement {
+object CPInterfaceMethodRef extends CPElementFromByteBuffer[CPInterfaceMethodRef] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPInterfaceMethodRef = {
 

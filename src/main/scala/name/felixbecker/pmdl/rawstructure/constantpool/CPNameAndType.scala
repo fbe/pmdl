@@ -14,7 +14,7 @@ case class CPNameAndType(cpIndex: Short, nameIndex: Short, descriptorIndex: Shor
   override def toStringInternal: String = s"Name: $nameIndex, Descriptor: $descriptorIndex"
 }
 
-object CPNameAndType extends FromByteBuffer[CPNameAndType] with ConstantPoolElement {
+object CPNameAndType extends CPElementFromByteBuffer[CPNameAndType] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPNameAndType = {
 

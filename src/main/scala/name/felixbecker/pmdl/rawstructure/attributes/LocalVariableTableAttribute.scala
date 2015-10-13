@@ -4,10 +4,12 @@ import java.nio.ByteBuffer
 
 import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 
-/**
- * Created by becker on 10/13/15.
- */
-object LocalVariableTableAttribute {
+case class LocalVariableTableEntry(startPc: Short, nameIndex: Short, descriptorIndex: Short, index: Short)
+
+case class LocalVariableTableAttribute(localVariableTableLength: Short, entries: List[LocalVariableTableEntry]) extends AttributeInfo
+
+object LocalVariableTableAttribute extends AttributeInfoFromByteBuffer[LocalVariableTableAttribute] {
+
   /*
   LocalVariableTable_attribute {
  X  u2 attribute_name_index;
@@ -21,16 +23,16 @@ object LocalVariableTableAttribute {
     } local_variable_table[local_variable_table_length];
    */
 
-  def parseFromByteBuffer(bytes: ByteBuffer, constantPool: ConstantPool): Unit ={
-    val localVariableTableLength = bytes.getShort()
+
+  override def fromByteBuffer(byteBuffer: ByteBuffer, constantPool: ConstantPool): LocalVariableTableAttribute = {
+    val localVariableTableLength = byteBuffer.getShort()
 
     val tableEntries = (1 to localVariableTableLength).map { _ =>
-      LocalVariableTableEntry(bytes.getShort(), bytes.getShort(), bytes.getShort(), bytes.getShort())
+      LocalVariableTableEntry(byteBuffer.getShort(), byteBuffer.getShort(), byteBuffer.getShort(), byteBuffer.getShort())
     }.toList
 
-    println(s"LocalVariableTable - entries: $localVariableTableLength - ${tableEntries.mkString(",")}")
+    LocalVariableTableAttribute(localVariableTableLength, tableEntries)
   }
+
+  override def getAttributeName: String = "LocalVariableTable"
 }
-
-case class LocalVariableTableEntry(startPc: Short, nameIndex: Short, descriptorIndex: Short, index: Short)
-

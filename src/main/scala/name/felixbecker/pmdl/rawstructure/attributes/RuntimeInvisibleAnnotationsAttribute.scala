@@ -7,7 +7,7 @@ import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 /**
  * Created by becker on 10/13/15.
  */
-object RuntimeInvisibleAnnotationsAttribute {
+object RuntimeInvisibleAnnotationsAttribute extends AttributeInfoFromByteBuffer[RuntimeInvisibleAnnotationsAttribute] {
   /*
   RuntimeInvisibleAnnotations_attribute {
 X   u2         attribute_name_index;
@@ -16,20 +16,26 @@ X   u4         attribute_length;
     annotation annotations[num_annotations];
   }
  */
-  def parseFromByteBuffer(bytes: ByteBuffer, constantPool: ConstantPool): Unit = {
-    val numAnnotations = bytes.getShort()
 
-    /*
-    annotation {
-    u2 type_index;
-    u2 num_element_value_pairs;
-    {   u2            element_name_index;
-        element_value value;
-    } element_value_pairs[num_element_value_pairs];
+  /*
+  annotation {
+  u2 type_index;
+  u2 num_element_value_pairs;
+  {   u2            element_name_index;
+      element_value value;
+  } element_value_pairs[num_element_value_pairs];
 }
 
-     */
+   */
 
-    println(s"RuntimeInvisibleAnnotationsAttribute - numAnnotations: $numAnnotations - bytes left: ${bytes.remaining()} TODO FIXME ADD ANNOTATION")
+  override def fromByteBuffer(byteBuffer: ByteBuffer, constantPool: ConstantPool): RuntimeInvisibleAnnotationsAttribute = {
+
+    val numAnnotations = byteBuffer.getShort()
+
+    RuntimeInvisibleAnnotationsAttribute(numAnnotations, byteBuffer)
+
   }
+
+  override def getAttributeName: String = "RuntimeInvisibleAnnotations"
 }
+case class RuntimeInvisibleAnnotationsAttribute(numAnnotations: Short, remainingUnparsedBytes: ByteBuffer) extends AttributeInfo

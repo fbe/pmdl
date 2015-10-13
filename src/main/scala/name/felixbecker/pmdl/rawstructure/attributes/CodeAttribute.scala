@@ -7,7 +7,7 @@ import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 /**
  * Created by becker on 10/13/15.
  */
-object CodeAttribute {
+object CodeAttribute extends AttributeInfoFromByteBuffer[CodeAttribute] {
 
   /*
 
@@ -31,30 +31,43 @@ X    u4 attribute_length;
    */
 
 
-  def parseFromBytes(bytes: ByteBuffer, constantPool: ConstantPool): Unit ={
-    val maxStack = bytes.getShort()
-    val maxLocals = bytes.getShort()
-    val codeLength = bytes.getInt()
+  override def fromByteBuffer(byteBuffer: ByteBuffer, constantPool: ConstantPool): CodeAttribute = {
 
-    val code = (1 to codeLength).map { _ => bytes.get()}.toArray
-    val exceptionTableLength = bytes.getShort()
+    val maxStack = byteBuffer.getShort()
+    val maxLocals = byteBuffer.getShort()
+    val codeLength = byteBuffer.getInt()
+
+    val code = (1 to codeLength).map { _ => byteBuffer.get()}.toArray
+    val exceptionTableLength = byteBuffer.getShort()
 
     val exceptionTableEntries = (1 to exceptionTableLength).map { _ =>
-      ExceptionTableEntry(bytes.getShort(), bytes.getShort(), bytes.getShort(), bytes.getShort())
+      ExceptionTableEntry(byteBuffer.getShort(), byteBuffer.getShort(), byteBuffer.getShort(), byteBuffer.getShort())
     }.toList
 
-    val attributesCount = bytes.getShort()
+    val attributesCount = byteBuffer.getShort()
 
-    val attributes = AttributeInfo.fromByteBuffer(bytes, attributesCount, constantPool)
+    val attributes = AttributeInfo.fromByteBuffer(byteBuffer, attributesCount, constantPool)
 
-    println(s"MaxStack: $maxStack, " +
-      s"MaxLocals: $maxLocals, " +
-      s"codeLength: $codeLength, " +
-      s"Code: ${code.length}, " +
-      s"ExceptionTableLength: $exceptionTableLength " +
-      s"${exceptionTableEntries.mkString(",")} " +
-      s"AttributesCount: ${attributesCount} " +
-      s"Remaining buffer size: ${bytes.remaining()}")
+    CodeAttribute(maxStack, maxLocals, codeLength, code, exceptionTableLength, exceptionTableEntries, attributesCount, attributes)
+
   }
+
+  override def getAttributeName: String = "Code"
+
 }
+
+case class CodeAttribute(
+  maxStack: Short,
+  maxLocals: Short,
+  codeLength: Int,
+  code: Array[Byte],
+  exceptionTableLength: Short,
+  exceptionTableEntries: List[ExceptionTableEntry],
+  attributeCount: Short,
+  attributes: List[AttributeInfo]
+
+) extends AttributeInfo {
+  override def toString: String = "CodeAttribute\n"
+}
+
 case class ExceptionTableEntry(startPc: Short, endPc: Short, handlerPc: Short, catchType: Short)

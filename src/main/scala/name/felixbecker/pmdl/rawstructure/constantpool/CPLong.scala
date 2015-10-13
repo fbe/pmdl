@@ -14,7 +14,7 @@ case class CPLong(cpIndex: Short, value: Long) extends CPInfo {
   override def toStringInternal: String = s"$value"
 }
 
-object CPLong extends FromByteBuffer[CPLong] with ConstantPoolElement {
+object CPLong extends CPElementFromByteBuffer[CPLong] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPLong = {
 

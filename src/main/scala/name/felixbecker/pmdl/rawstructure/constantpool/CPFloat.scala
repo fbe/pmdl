@@ -13,7 +13,7 @@ case class CPFloat(cpIndex: Short, value: Float) extends CPInfo {
   override def toStringInternal: String = s"$value"
 }
 
-object CPFloat extends FromByteBuffer[CPFloat] with ConstantPoolElement {
+object CPFloat extends CPElementFromByteBuffer[CPFloat] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPFloat = {
 

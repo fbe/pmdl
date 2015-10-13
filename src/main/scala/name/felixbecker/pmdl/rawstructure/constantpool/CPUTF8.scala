@@ -14,7 +14,7 @@ case class CPUTF8(cpIndex: Short, value: String) extends CPInfo {
   override def toStringInternal: String = s"'$value'"
 }
 
-object CPUTF8 extends FromByteBuffer[CPUTF8] with ConstantPoolElement {
+object CPUTF8 extends CPElementFromByteBuffer[CPUTF8] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPUTF8 = {
 

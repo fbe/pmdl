@@ -4,10 +4,7 @@ import java.nio.ByteBuffer
 
 import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 
-/**
- * Created by becker on 10/13/15.
- */
-object LineNumberTableAttribute {
+object LineNumberTableAttribute extends AttributeInfoFromByteBuffer[LineNumberTableAttribute] {
   /*
   LineNumberTable_attribute {
 X   u2 attribute_name_index;
@@ -19,17 +16,20 @@ X   u4 attribute_length;
   }
   */
 
-  def parseFromBytes(bytes: ByteBuffer, constantPool: ConstantPool): Unit = {
+  override def fromByteBuffer(byteBuffer: ByteBuffer, constantPool: ConstantPool): LineNumberTableAttribute = {
 
-    val lineNumberTableLength = bytes.getShort()
+    val lineNumberTableLength = byteBuffer.getShort()
 
     val lineNumberTableEntries = (1 to lineNumberTableLength).map { _ =>
-      LineNumberTableEntry(bytes.getShort(), bytes.getShort())
+      LineNumberTableEntry(byteBuffer.getShort(), byteBuffer.getShort())
     }.toList
 
-    println(s"LineNumberTable: length: $lineNumberTableLength, entries: ${lineNumberTableEntries.mkString(",")}")
+    LineNumberTableAttribute(lineNumberTableLength, lineNumberTableEntries)
+
   }
 
+  override def getAttributeName: String = "LineNumberTable"
 }
 
+case class LineNumberTableAttribute(tableLength: Short, entries: List[LineNumberTableEntry]) extends AttributeInfo
 case class LineNumberTableEntry(startPc: Short, lineNumber: Short)

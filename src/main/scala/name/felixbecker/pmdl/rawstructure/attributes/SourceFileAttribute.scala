@@ -7,7 +7,7 @@ import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 /**
  * Created by becker on 10/13/15.
  */
-object SourceFileAttribute {
+object SourceFileAttribute extends AttributeInfoFromByteBuffer[SourceFileAttribute] {
 
   /*
 
@@ -18,8 +18,13 @@ X   u4 attribute_length;
   }
 
   */
-  def parseFromByteBuffer(bytes: ByteBuffer, constantPool: ConstantPool): Unit = {
-    val sourceFileIndex = bytes.getShort()
-    println(s"SourceFile index: $sourceFileIndex")
+  override def fromByteBuffer(byteBuffer: ByteBuffer, constantPool: ConstantPool): SourceFileAttribute = {
+    val sourceFileIndex = byteBuffer.getShort()
+    SourceFileAttribute(sourceFileIndex)
   }
+
+
+  override def getAttributeName: String = "SourceFile"
 }
+
+case class SourceFileAttribute(sourceFileIndex: Short) extends AttributeInfo

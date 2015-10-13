@@ -13,7 +13,7 @@ case class CPClassTag(cpIndex: Short, nameIndex: Short) extends CPInfo {
   override def toStringInternal: String = s"Name: $nameIndex"
 }
 
-object CPClassTag extends FromByteBuffer[CPClassTag] with ConstantPoolElement {
+object CPClassTag extends CPElementFromByteBuffer[CPClassTag] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPClassTag = {
 

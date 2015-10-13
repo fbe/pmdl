@@ -14,7 +14,7 @@ case class CPDouble(cpIndex: Short, value: Double) extends CPInfo {
   override def toStringInternal: String = s"$value"
 }
 
-object CPDouble extends FromByteBuffer[CPDouble] with ConstantPoolElement {
+object CPDouble extends CPElementFromByteBuffer[CPDouble] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPDouble = {
 
