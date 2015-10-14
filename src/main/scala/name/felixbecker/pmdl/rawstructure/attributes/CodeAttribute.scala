@@ -56,6 +56,8 @@ X    u4 attribute_length;
 
 }
 
+
+
 case class CodeAttribute(
   maxStack: Short,
   maxLocals: Short,
@@ -67,7 +69,20 @@ case class CodeAttribute(
   attributes: List[AttributeInfo]
 
 ) extends AttributeInfo {
-  override def toString: String = "CodeAttribute\n"
+  override def toString: String = {
+    val head = "CodeAttribute\n"
+    val bytes = ByteBuffer.wrap(code)
+
+    var toString = ""
+
+    while(bytes.hasRemaining){
+      toString = toString + "%02x".format(bytes.get) + "\n"
+    }
+
+
+    head + toString
+
+  }
 }
 
 case class ExceptionTableEntry(startPc: Short, endPc: Short, handlerPc: Short, catchType: Short)
