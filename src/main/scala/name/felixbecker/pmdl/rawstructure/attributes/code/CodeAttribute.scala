@@ -74,7 +74,7 @@ case class CodeAttribute(
     val head = "CodeAttribute\n"
 
 
-    head + code.mkString(",\n")
+    head + code.map(c => s"     $c").mkString("\n")
 
   }
 }
