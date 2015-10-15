@@ -2,6 +2,7 @@ package name.felixbecker.pmdl.rawstructure.attributes
 
 import java.nio.ByteBuffer
 
+import name.felixbecker.pmdl.rawstructure.attributes.code.CodeAttribute
 import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 
 

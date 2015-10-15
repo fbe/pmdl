@@ -1,7 +1,8 @@
-package name.felixbecker.pmdl.rawstructure.attributes
+package name.felixbecker.pmdl.rawstructure.attributes.code
 
 import java.nio.ByteBuffer
 
+import name.felixbecker.pmdl.rawstructure.attributes.{AttributeInfo, AttributeInfoFromByteBuffer}
 import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 
 /**
@@ -48,7 +49,7 @@ X    u4 attribute_length;
 
     val attributes = AttributeInfo.fromByteBuffer(byteBuffer, attributesCount, constantPool)
 
-    CodeAttribute(maxStack, maxLocals, codeLength, code, exceptionTableLength, exceptionTableEntries, attributesCount, attributes)
+    CodeAttribute(maxStack, maxLocals, codeLength, Opcode.parseFromByteBuffer(ByteBuffer.wrap(code)), exceptionTableLength, exceptionTableEntries, attributesCount, attributes)
 
   }
 
@@ -62,7 +63,7 @@ case class CodeAttribute(
   maxStack: Short,
   maxLocals: Short,
   codeLength: Int,
-  code: Array[Byte],
+  code: List[Opcode],
   exceptionTableLength: Short,
   exceptionTableEntries: List[ExceptionTableEntry],
   attributeCount: Short,
@@ -71,16 +72,9 @@ case class CodeAttribute(
 ) extends AttributeInfo {
   override def toString: String = {
     val head = "CodeAttribute\n"
-    val bytes = ByteBuffer.wrap(code)
-
-    var toString = ""
-
-    while(bytes.hasRemaining){
-      toString = toString + "%02x".format(bytes.get) + "\n"
-    }
 
 
-    head + toString
+    head + code.mkString(",\n")
 
   }
 }
