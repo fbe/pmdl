@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object LOR extends OpcodeFromBytes[LOR] {
 }
 
 case class LOR() extends Opcode
-
-  

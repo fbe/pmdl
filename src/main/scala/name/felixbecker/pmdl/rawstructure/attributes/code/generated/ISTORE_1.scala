@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object ISTORE_1 extends OpcodeFromBytes[ISTORE_1] {
 }
 
 case class ISTORE_1() extends Opcode
-
-  

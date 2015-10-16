@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object IF_ICMPGT extends OpcodeFromBytes[IF_ICMPGT] {
 }
 
 case class IF_ICMPGT(branchbyte1: Byte, branchbyte2: Byte) extends Opcode
-
-  

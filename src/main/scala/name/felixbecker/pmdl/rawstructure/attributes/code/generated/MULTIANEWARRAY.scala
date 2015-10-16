@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object MULTIANEWARRAY extends OpcodeFromBytes[MULTIANEWARRAY] {
 }
 
 case class MULTIANEWARRAY(indexbyte1: Byte, indexbyte2: Byte, dimensions: Byte) extends Opcode
-
-  

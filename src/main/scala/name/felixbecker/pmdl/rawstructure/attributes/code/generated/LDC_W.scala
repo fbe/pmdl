@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object LDC_W extends OpcodeFromBytes[LDC_W] {
 }
 
 case class LDC_W(indexbyte1: Byte, indexbyte2: Byte) extends Opcode
-
-  

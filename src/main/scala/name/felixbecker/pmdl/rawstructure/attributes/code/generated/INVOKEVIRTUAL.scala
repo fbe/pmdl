@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object INVOKEVIRTUAL extends OpcodeFromBytes[INVOKEVIRTUAL] {
 }
 
 case class INVOKEVIRTUAL(indexbyte1: Byte, indexbyte2: Byte) extends Opcode
-
-  

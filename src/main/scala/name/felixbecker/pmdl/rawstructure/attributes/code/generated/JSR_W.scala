@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object JSR_W extends OpcodeFromBytes[JSR_W] {
 }
 
 case class JSR_W(branchbyte1: Byte, branchbyte2: Byte, branchbyte3: Byte, branchbyte4: Byte) extends Opcode
-
-  

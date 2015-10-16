@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object IADD extends OpcodeFromBytes[IADD] {
 }
 
 case class IADD() extends Opcode
-
-  

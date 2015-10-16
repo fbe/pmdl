@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object INVOKEINTERFACE extends OpcodeFromBytes[INVOKEINTERFACE] {
 }
 
 case class INVOKEINTERFACE(indexbyte1: Byte, indexbyte2: Byte, count: Byte, zeroByte1: Byte) extends Opcode
-
-  

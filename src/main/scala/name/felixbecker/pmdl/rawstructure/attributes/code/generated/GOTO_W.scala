@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object GOTO_W extends OpcodeFromBytes[GOTO_W] {
 }
 
 case class GOTO_W(branchbyte1: Byte, branchbyte2: Byte, branchbyte3: Byte, branchbyte4: Byte) extends Opcode
-
-  

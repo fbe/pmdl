@@ -1,4 +1,3 @@
-
 package name.felixbecker.pmdl.rawstructure.attributes.code.generated
 
 import java.nio.ByteBuffer
@@ -12,5 +11,3 @@ object INEG extends OpcodeFromBytes[INEG] {
 }
 
 case class INEG() extends Opcode
-
-  

@@ -77,8 +77,8 @@ private[code] object OpCodeGenerator extends App {
 
 
   def generateOpCode(byte: String, name: String, parameter: List[String]): String = {
-    val template = s"""
-    |package name.felixbecker.pmdl.rawstructure.attributes.code.generated
+    val template =
+s"""|package name.felixbecker.pmdl.rawstructure.attributes.code.generated
     |
     |import java.nio.ByteBuffer
     |import name.felixbecker.pmdl.rawstructure.attributes.code.{Opcode, OpcodeFromBytes}
@@ -91,8 +91,7 @@ private[code] object OpCodeGenerator extends App {
     |}
     |
     |case class $name(${parameter.map(_ + ": Byte").mkString(", ")}) extends Opcode
-    |
-  """.stripMargin
+    |""".stripMargin
     template
   }
 }
