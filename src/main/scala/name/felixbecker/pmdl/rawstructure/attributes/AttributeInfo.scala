@@ -36,7 +36,10 @@ object AttributeInfo {
     LocalVariableTableAttribute,
     RuntimeInvisibleAnnotationsAttribute,
     SourceFileAttribute,
-    StackMapTableAttribute
+    StackMapTableAttribute,
+    SignatureAttribute,
+    ExceptionsAttribute,
+    LocalVariableTypeTableAttribute
   ).map(a => a.getAttributeName -> a).toMap[String, AttributeInfoFromByteBuffer[_ <: AttributeInfo]]
 
 
