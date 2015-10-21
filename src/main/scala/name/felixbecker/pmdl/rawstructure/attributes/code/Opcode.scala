@@ -210,7 +210,9 @@ object Opcode {
     SALOAD,
     SASTORE,
     SIPUSH,
-    SWAP
+    SWAP,
+    TABLESWITCH,
+    LOOKUPSWITCH
   ).map(companion => companion.byteValue -> companion).toMap
 
   private def parseSingleOpcode(byteBuffer: ByteBuffer): Opcode = {

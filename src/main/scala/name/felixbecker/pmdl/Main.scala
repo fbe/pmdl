@@ -22,7 +22,10 @@ object Main extends App {
     rawClassFile
   }
 
-  val parsedClasses = TestClasses.classes.map(getClassFile)
+  //val parsedClasses = TestClasses.classes.map(getClassFile)
+
+  getClassFile("target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/SimpleSwitchClass.class")
+
   //println(s"Parsed classes: ${parsedClasses.size}")
 
   //getClassFile()
