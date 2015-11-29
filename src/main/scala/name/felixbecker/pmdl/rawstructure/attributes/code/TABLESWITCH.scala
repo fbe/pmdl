@@ -9,34 +9,25 @@ object TABLESWITCH extends OpcodeFromBytes[TABLESWITCH] {
 
   override def parseFromByte(byteBuffer: ByteBuffer): Opcode = {
 
-    println(s"Byte buffer - position: ${byteBuffer.position()}/${byteBuffer.capacity()} (remaining: ${byteBuffer.remaining()})")
+    val opcodePosition = byteBuffer.position()-1 // offset for jump, jump offsets are relative here, opCodePosition used to make them to absolute jump values inside the code attribute
 
-    val copy = byteBuffer.duplicate()
-    val bytes = (1 to 20).map(x => copy.get()).grouped(4).map(byteGroup => byteGroup.map(b => "0x%02x".format(b)).mkString(" ")).mkString("\n")
+    // DROP padding bytes
+    while(byteBuffer.position() % 4 != 0){
+      byteBuffer.get()
+    }
 
-    println(s"Next 20 bytes:\n$bytes")
+    val default = byteBuffer.getInt() + opcodePosition
+    val low = byteBuffer.getInt()
+    val high = byteBuffer.getInt()
 
-    val offset = 0
-    // Skipping offset
-    (1 to offset).foreach(_ => byteBuffer.get())
+    val tableEntries = (low to high).map(x => x -> (byteBuffer.getInt()+opcodePosition)).toMap
 
-    val defaultByte1 = byteBuffer.get()
-    val defaultByte2 = byteBuffer.get()
-    val defaultByte3 = byteBuffer.get()
-    val defaultByte4 = byteBuffer.get()
-
-    val low = byteBuffer.getInt
-    val high = byteBuffer.getInt
-
-    println(s"Low $low, high: $high")
-
-    throw new RuntimeException("yaya bin con tableswitch")
-    //TABLESWITCH()
+    TABLESWITCH(default, low, high,tableEntries)
   }
 
   override def byteValue: Byte = 0xaa.toByte
 }
 
-case class TABLESWITCH() extends Opcode
+case class TABLESWITCH(default: Int, low: Int, high: Int, tableEntries: Map[Int, Int]) extends Opcode
 
 

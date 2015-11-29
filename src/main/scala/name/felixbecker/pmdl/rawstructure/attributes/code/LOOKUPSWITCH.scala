@@ -2,42 +2,30 @@ package name.felixbecker.pmdl.rawstructure.attributes.code
 
 import java.nio.ByteBuffer
 
-/**
- * Created by becker on 10/21/15.
- */
 object LOOKUPSWITCH extends OpcodeFromBytes[LOOKUPSWITCH] {
 
   override def parseFromByte(byteBuffer: ByteBuffer): Opcode = {
 
-    println("Lookup switch parsing")
+    val opcodePosition = byteBuffer.position()-1 // offset for jump, jump offsets are relative here, opCodePosition used to make them to absolute jump values inside the code attribute
 
-    println(s"Byte buffer - position: ${byteBuffer.position()}/${byteBuffer.capacity()} (remaining: ${byteBuffer.remaining()})")
+    // drop padding bytes
+    while(byteBuffer.position() % 4 != 0){
+      byteBuffer.get()
+    }
 
-    val copy = byteBuffer.duplicate()
-    val bytes = (1 to 20).map(x => copy.get()).grouped(4).map(byteGroup => byteGroup.map(b => "0x%02x".format(b)).mkString(" ")).mkString("\n")
+    val default = byteBuffer.getInt + opcodePosition
 
-    println(s"Next 20 bytes:\n$bytes")
+    val npairsCount = byteBuffer.getInt
 
-    val offset = 2
-    // Skipping offset
-    (1 to offset).foreach(_ => byteBuffer.get())
 
-    val defaultByte1 = byteBuffer.get()
-    val defaultByte2 = byteBuffer.get()
-    val defaultByte3 = byteBuffer.get()
-    val defaultByte4 = byteBuffer.get()
+    val npairs = (1 to npairsCount).map(_ => NPair(byteBuffer.getInt(), byteBuffer.getInt() + opcodePosition)).toList
 
-    val npairs = byteBuffer.getInt
+    LOOKUPSWITCH(default, npairs)
 
-    println(s"N Pairs: $npairs")
-
-    throw new RuntimeException("yaya bin con LOOKUPSWITCH")
-    //LOOKUPSWITCH()
   }
 
   override def byteValue: Byte = 0xab.toByte
 }
 
-case class LOOKUPSWITCH() extends Opcode
-
-
+case class NPair(nMatch: Int, offset: Int)
+case class LOOKUPSWITCH(default: Int, npairs: List[NPair]) extends Opcode

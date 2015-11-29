@@ -18,6 +18,10 @@ public class SimpleSwitchClass {
                 System.out.println("switch test2 hit");
                 break;
 
+            case "test4":
+                System.out.println("Test 4");
+                break;
+
             default:
                 System.out.println("default case");
                 break;
