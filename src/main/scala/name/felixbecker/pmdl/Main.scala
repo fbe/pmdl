@@ -22,9 +22,14 @@ object Main extends App {
     rawClassFile
   }
 
-  //val parsedClasses = TestClasses.classes.map(getClassFile)
+  val parsedClasses = TestClasses.classes.map(clazz => {
+    println(s"parsing class $clazz")
+    getClassFile(clazz)
+  })
 
-  println(getClassFile("target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/SimpleSwitchClass.class"))
+  //println(getClassFile("target/scala-2.11/test-classes/name/felixbecker/pmdl/testassets/SimpleSwitchClass.class"))
+
+  println(getClassFile("/home/becker/tmp/flex/tools/debugger/cli/DebugCLI.class"))
 
   //println(s"Parsed classes: ${parsedClasses.size}")
 

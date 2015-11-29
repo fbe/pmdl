@@ -4,9 +4,6 @@ import java.nio.ByteBuffer
 
 import name.felixbecker.pmdl.rawstructure.constantpool.ConstantPool
 
-case class LocalVariableTableEntry(startPc: Short, nameIndex: Short, descriptorIndex: Short, index: Short)
-
-case class LocalVariableTableAttribute(localVariableTableLength: Short, entries: List[LocalVariableTableEntry]) extends AttributeInfo
 
 object LocalVariableTableAttribute extends AttributeInfoFromByteBuffer[LocalVariableTableAttribute] {
 
@@ -36,3 +33,7 @@ object LocalVariableTableAttribute extends AttributeInfoFromByteBuffer[LocalVari
 
   override def getAttributeName: String = "LocalVariableTable"
 }
+
+case class LocalVariableTableEntry(startPc: Short, nameIndex: Short, descriptorIndex: Short, index: Short)
+
+case class LocalVariableTableAttribute(localVariableTableLength: Short, entries: List[LocalVariableTableEntry]) extends AttributeInfo
