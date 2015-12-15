@@ -212,7 +212,8 @@ object Opcode {
     SIPUSH,
     SWAP,
     TABLESWITCH,
-    LOOKUPSWITCH
+    LOOKUPSWITCH,
+    WIDE
   ).map(companion => companion.byteValue -> companion).toMap
 
   private def parseSingleOpcode(byteBuffer: ByteBuffer): Opcode = {

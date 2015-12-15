@@ -16,11 +16,7 @@ Attributes are used in the ClassFile, field_info, method_info, and Code_attribut
     u1 info[attribute_length];
   }
 
-  
-
-
  */
-
 
 
 
@@ -88,28 +84,12 @@ object AttributeInfo {
 
     val attributeName = constantPool.getString(attributeNameIndex)
 
-    val attributeCompanion = attributeInfoCompanions.getOrElse(attributeName, throw new RuntimeException(s"Cannot parse Attribute with name $attributeName - not known!"))
+    val attributeCompanion = attributeInfoCompanions.get(attributeName)
 
-    attributeCompanion.fromByteBuffer(ByteBuffer.wrap(attributeBytes), constantPool)
+    attributeCompanion match {
+      case Some(companion) => companion.fromByteBuffer(ByteBuffer.wrap(attributeBytes), constantPool)
+      case None =>
+        RawAttribute(attributeName, (1 to attributeLength).map(byteBuffer.get).toArray)
+    }
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
