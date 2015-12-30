@@ -17,9 +17,20 @@ RuntimeVisibleAnnotations_attribute {
 object RuntimeVisibleAnnotationsParameterAttribute extends AttributeInfoFromByteBuffer[RuntimeVisibleAnnotationsParameterAttribute]{
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPool: ConstantPool): RuntimeVisibleAnnotationsParameterAttribute = {
+    val numAnnotations = byteBuffer.getShort
+    println(s"TODO Implement me RuntimeVisibleAnnotations - byte buffer length: ${byteBuffer.capacity()} - numAnnotations: $numAnnotations")
+    (1 to numAnnotations).foreach { num =>
+      val typeIdx = byteBuffer.getShort()
+      val numElementValuePairs = byteBuffer.getShort()
+      println(s"Num Element value pairs: $numElementValuePairs")
+      (1 to numElementValuePairs).foreach { n =>
+        val elementNameIdx = byteBuffer.getShort()
+        val tag = byteBuffer.get()
+        println(s"In constant pool (by elementNameIdx: ${constantPool.elements(elementNameIdx)})")
+        println(s"Tag: ${new String(Array(tag))}")
+      }
 
-
-    println("TODO Implement me RuntimeVisibleAnnotations")
+    }
     RuntimeVisibleAnnotationsParameterAttribute()
   }
 
