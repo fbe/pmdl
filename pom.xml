@@ -10,6 +10,15 @@
     <name>PMDL</name>
     <url>https://github.com/fbe/pmdl</url>
 
+    <developers>
+        <developer>
+            <id>fbe</id>
+            <email>pmdl@felixbecker.name</email>
+            <name>Felix Becker</name>
+            <url>http://www.github.com/fbe/</url>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
