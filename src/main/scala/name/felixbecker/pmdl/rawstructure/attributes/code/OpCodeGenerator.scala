@@ -10,9 +10,10 @@ import scala.collection.JavaConversions._
  * Created by becker on 10/14/15.
  */
 
-sealed case class OpCode(name: String, byteValue: String, parameters: List[String])
 
 private[code] object OpCodeGenerator extends App {
+
+  case class OpCode(name: String, byteValue: String, parameters: List[String])
 
   val document = Jsoup.connect("https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-6.html").get()
   // class section-execution
