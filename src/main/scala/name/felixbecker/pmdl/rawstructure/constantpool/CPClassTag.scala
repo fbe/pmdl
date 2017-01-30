@@ -17,7 +17,8 @@ object CPClassTag extends CPElementFromByteBuffer[CPClassTag] with ConstantPoolE
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPClassTag = {
 
-    val nameIndex = byteBuffer.getShort
+    import name.felixbecker.pmdl.ByteHelper._
+    val nameIndex = byteBuffer.getUnsignedShort
     CPClassTag(constantPoolIndex, nameIndex)
 
   }

@@ -1,7 +1,7 @@
 package name.felixbecker.pmdl.rawstructure.constantpool
 
 import java.nio.ByteBuffer
-
+import name.felixbecker.pmdl.ByteHelper._
 /*
   CONSTANT_Utf8_info {
     u1 tag;
@@ -17,9 +17,7 @@ case class CPUTF8(cpIndex: Short, value: String) extends CPInfo {
 object CPUTF8 extends CPElementFromByteBuffer[CPUTF8] with ConstantPoolElement {
 
   override def fromByteBuffer(byteBuffer: ByteBuffer, constantPoolIndex: Short): CPUTF8 = {
-
-    val length = byteBuffer.getShort
-
+    val length = byteBuffer.getUnsignedShort
     // TODO Clean up please
     val stringBytes: Array[Byte] = (1 to length).map { _ =>
       byteBuffer.get

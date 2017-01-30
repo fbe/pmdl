@@ -17,10 +17,10 @@ object Main extends App {
 
   import scala.sys.process._
 
-  //val result = (Seq("find", "/home/becker/dgl/hybris-platform/", "-iname" ,"*.class") #| Seq("xargs", "realpath")).lineStream.toList
-  //result.foreach(getClassFile)
+  val result = (Seq("find", "/home/becker/kaufhof/git/", "-iname" ,"*.class") #| Seq("xargs", "realpath")).lineStream.toList
+  result.foreach(getClassFile)
 
-  getClassFile("/home/becker/dgl/hybris-platform/bin/extensions/douglas/classes/de/douglas/services/deucs/jaxb/DebtorStatus.class")
+//  getClassFile("/home/becker/kaufhof/git/gkh-explore/modules/smc/target/scala-2.11/classes/mam/soap/generated/XMLProtocol.class")
 
 
 }

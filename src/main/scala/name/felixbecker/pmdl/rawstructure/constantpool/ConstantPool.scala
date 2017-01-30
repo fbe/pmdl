@@ -40,8 +40,8 @@ object ConstantPool {
 
   @tailrec
   private def parseRec(currentPoolElements: Map[Short, CPInfo], constantPoolCount: Short, currentIndex: Short, bytes: ByteBuffer): Map[Short, CPInfo] = {
-
     val elem = getOneConstantPoolElementFromByteBuffer(bytes, currentIndex)
+    System.err.println(s"IDX: $currentIndex - elem: ${elem.constantPoolElement}" )
     val newConstantPool = currentPoolElements + (currentIndex -> elem.constantPoolElement)
 
     if(currentIndex == constantPoolCount-1) // -1 because max constant pool idx == size -1 (defined in spec)
@@ -56,6 +56,7 @@ object ConstantPool {
   private def getOneConstantPoolElementFromByteBuffer(byteBuffer : ByteBuffer, currentSlotIndex: Short) = {
 
     val tag = byteBuffer.get()
+    System.err.println(s"Tag is: $tag")
 
     val cpElementCompanion = elementCompanionsByTag.getOrElse(tag, throw new RuntimeException(s"Cannot parse constant pool - no Element with tag $tag known!"))
 
